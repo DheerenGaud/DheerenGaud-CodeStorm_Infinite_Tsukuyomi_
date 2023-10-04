@@ -26,6 +26,7 @@ const connected = async () => {
   };
         
 connected();
+app.use("/public",express.static('public'))
 
 
 app.use("/auth",Router1);

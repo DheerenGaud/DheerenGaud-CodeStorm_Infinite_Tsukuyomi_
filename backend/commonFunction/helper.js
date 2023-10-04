@@ -3,6 +3,7 @@ const jwt=require("jsonwebtoken")
 
 
 exports.tokenVerify=async(token)=>{
+    console.log(token);
     try {
       const user=jwt.verify(token,process.env.JWT_SECREAT,(err,res)=>{
           if(err){

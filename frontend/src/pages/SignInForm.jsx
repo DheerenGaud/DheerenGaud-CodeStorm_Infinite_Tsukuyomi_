@@ -15,13 +15,14 @@ const handleClick = async(e)=>{
     e.preventDefault()
     try {
         const x= await LogINUser(data);
-        console.log(x.data);
-        if(x.data.status==="ok"){
-            window.location.href="./user/"
-        }
-        else{
-            alert(x.data.error)
-        }
+        if (x.data.status === "ok") {
+            window.localStorage.setItem("token", x.data.data);
+            window.localStorage.setItem("loginStatus", true);
+              window.location.href = "./client";
+          }
+          else{
+               toast.error(x.data.error)
+          }
     } catch (error) {
         console.log(error);
     }

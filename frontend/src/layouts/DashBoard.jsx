@@ -2,6 +2,10 @@ import { Link, Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 export default function Dashboard(props){
+    const loginStatus = window.localStorage.getItem("loginStatus");
+    if(!loginStatus){
+        window.location.href = "./signin";
+    }
     return (
         <>
             <div className="font-poppins">
@@ -44,7 +48,7 @@ export default function Dashboard(props){
 
                             <ul className="mt-2 space-y-1 px-4">
                                 <li>
-                                    <Link className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" to="/user/add-event" >
+                                    <Link className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" to="/client/add-event" >
                                         Add An Event
                                     </Link>
                                 </li>

@@ -1,164 +1,221 @@
-export default function AddEvent(props){
-    return(
-        <>
-            <form action="">
-                <div className="py-12 px-32">
-                    <div className="flex justify-between">
-                        <div>
-                            <div className="text-3xl font-bold ">
-                                Add An Event
-                            </div>
-                            <div className="flex">
-                                <div className="[&>*]:py-4 [&>*]:w-96 text-xl  ">
-                                    <div >
-                                        <label
-                                            htmlFor="Name"
-                                            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                        >
-                                            <input
-                                                type="text"
-                                                id="Name"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 px-4 py-2 w-full text-base"
-                                                placeholder="Name"
-                                                
-                                            />
+import React, { useState } from 'react';
+import Select from 'react-select';
+import { addEvent } from '../../api/api';
+const EventCreationForm = () => {
+  const token=window.localStorage.getItem("token")
+  const [formData, setFormData] = useState({
+    eventName: '',
+    eventBudget: '',
+    eventCategory: 'Entertainment',
+    eventCustomRequirements: [],
+    eventStartDateTime: '',
+    eventEndDateTime: '',
+    description: '',
+    
+    eventCapacity: '',
+    token:token,
+  });
+ 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                Name
-                                            </span>
-                                            
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label
-                                                htmlFor="Date"
-                                                className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                            >
-                                            <input
-                                                type="date"
-                                                id="Date"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-base p-4 text-gray-500 w-full"
-                                                placeholder="Date"
-                                            />
+  const customRequirementOptions = [
+    { value: 'Food', label: 'Food' },
+    { value: 'Hospitality', label: 'Hospitality' },
+    { value: 'Decoration', label: 'Decoration' },
+    { value: 'Entertainment', label: 'Entertainment' },
+    { value: 'Conference', label: 'Conference' },
+  ];
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                Date
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label
-                                                htmlFor="Budget"
-                                                className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                            >
-                                            <input
-                                                type="number"
-                                                id="Budget"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-base p-4 w-full"
-                                                placeholder="Budget"
-                                            />
+  const handleCustomRequirementsChange = (selectedOptions) => {
+    setFormData({
+      ...formData,
+      eventCustomRequirements: selectedOptions.map((req) => req.value),
+    });
+  };
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                &#8377; Budget
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label
-                                                htmlFor="Requirements"
-                                                className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                            >
-                                            <textarea 
-                                                name="Requirements"
-                                                id="Requirements"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-base p-4 w-full"
-                                                placeholder="Requirements"
-                                            />
+  const handleSbmit= async()=>{
+   
+    // const formDataToSend = new FormData();
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                Requirements
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label htmlFor="Categories" className="block text-sm font-medium text-gray-900">
-                                            Event Categories
-                                        </label>
+    // for (const key in formData) {
+    //   formDataToSend.append(key, formData[key]);
+    // }
+ 
+      console.log(formData);
+      const x= await addEvent(formData);
+      console.log(x.data)
+  }
 
-                                        <select
-                                            name="Categories"
-                                            id="Categories"
-                                            className="mt-1.5 w-full rounded-lg text-gray-700 sm:text-sm p-4 border-[#e5e7eb] border-solid border-2 bg-white"
-                                        >
-                                            <option value="">Please select</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="attendee">Attendee</option>
-                                            <option value="client">Client</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label
-                                                htmlFor="Time"
-                                                className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                            >
-                                            <input
-                                                type="time"
-                                                id="Time"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-base p-4 w-full"
-                                                placeholder="Time"
-                                            />
+   
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                Time
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label
-                                                htmlFor="Description"
-                                                className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                                            >
-                                            <textarea 
-                                                name="Description"
-                                                id="Description"
-                                                className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-base p-4 w-full"
-                                                placeholder="Description"
-                                            />
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      eventImage: file, // Set the selected file in formData
+    });
+  };
 
-                                            <span
-                                                className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs"
-                                            >
-                                                Description
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div className="text-3xl font-bold ">
-                                    Image
-                                </div>
-                                <div>
-                                    <input type="file" name="Image" id="Image" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <h2 className="text-2xl font-semibold mb-4">Create Event</h2>
 
-        </>
-    )
-}
+      {/* Event Name */}
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="eventName">
+          Event Name
+        </label>
+        <input
+          className="border rounded py-2 px-3 w-full"
+          type="text"
+          id="eventName"
+          name="eventName"
+          value={formData.eventName}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* Event Budget */}
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="eventBudget">
+          Event Budget
+        </label>
+        <input
+          className="border rounded py-2 px-3 w-full"
+          type="text"
+          id="eventBudget"
+          name="eventBudget"
+          value={formData.eventBudget}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* Event Category */}
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="eventCategory">
+          Event Category
+        </label>
+        <select
+          className="border rounded py-2 px-3 w-full"
+          id="eventCategory"
+          name="eventCategory"
+          value={formData.eventCategory}
+          onChange={handleChange}
+        >
+          <option value="Entertainment">Entertainment</option>
+          {/* Add more options here */}
+        </select>
+      </div>
+
+
+      {/* Event Status */}
+    
+
+    {/* Event Custom Requirements */}
+    <div>
+          <label htmlFor="CustomRequirements" className="block text-sm font-medium text-gray-900">
+            Custom Requirements
+          </label>
+          <Select
+            id="CustomRequirements"
+            isMulti
+            options={customRequirementOptions}
+            value={customRequirementOptions.filter((option) =>
+              formData.eventCustomRequirements.includes(option.value)
+            )}
+            onChange={handleCustomRequirementsChange}
+            placeholder="Select custom requirements"
+          />
+        </div>
+
+{/* Event Start Date and Time */}
+<div className="mb-4">
+  <label className="block text-gray-700 font-bold mb-2" htmlFor="eventStartDateTime">
+    Event Start Date and Time
+  </label>
+  <input
+    className="border rounded py-2 px-3 w-full"
+    type="datetime-local"
+    id="eventStartDateTime"
+    name="eventStartDateTime"
+    value={formData.eventStartDateTime}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Event End Date and Time */}
+<div className="mb-4">
+  <label className="block text-gray-700 font-bold mb-2" htmlFor="eventEndDateTime">
+    Event End Date and Time
+  </label>
+  <input
+    className="border rounded py-2 px-3 w-full"
+    type="datetime-local"
+    id="eventEndDateTime"
+    name="eventEndDateTime"
+    value={formData.eventEndDateTime}
+    onChange={handleChange}
+  />
+</div>
+
+{/* Description */}
+<div className="mb-4">
+  <label className="block text-gray-700 font-bold mb-2" htmlFor="description">
+    Description
+  </label>
+  <textarea
+    className="border rounded py-2 px-3 w-full"
+    id="description"
+    name="description"
+    value={formData.description}
+    onChange={handleChange}
+    rows="4"
+  ></textarea>
+</div>
+
+{/* Event Image */}
+{/* <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="eventImage">
+          Event Image
+        </label>
+        <input
+          className="border rounded py-2 px-3 w-full"
+          type="file"
+          id="eventImage"
+          name="eventImage"
+          onChange={handleImageChange} // Handle image change
+        />
+      </div> */}
+
+{/* Event Capacity */}
+<div className="mb-4">
+  <label className="block text-gray-700 font-bold mb-2" htmlFor="eventCapacity">
+    Event Capacity
+  </label>
+  <input
+    className="border rounded py-2 px-3 w-full"
+    type="number"
+    id="eventCapacity"
+    name="eventCapacity"
+    value={formData.eventCapacity}
+    onChange={handleChange}
+  />
+</div>
+      
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+       onClick={handleSbmit}
+      >
+        Create Event
+      </button>
+    </div>
+  );
+};
+
+export default EventCreationForm;

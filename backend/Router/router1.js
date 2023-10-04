@@ -29,7 +29,7 @@ treanspoter.verify((err,success)=>{
 })
 
 const sendemailvarification=({_id,email},res)=>{
-    const currentUrl="http://localhost:3000/";
+    const currentUrl="http://localhost:5173/";
     const uniqueSting=uuidv4()+_id;
    
     const mailOptions={
@@ -75,8 +75,9 @@ const sendemailvarification=({_id,email},res)=>{
    
    }
    
-Router.get("/verify/:userID/:uinqueString",async(req,res)=>{
+Router.get("/user/verify/:userID/:uinqueString",async(req,res)=>{
     let {userID,uinqueString}=req.params;
+    console.log(userID);
     UserVarification.find({userID})
     .then((result)=>{
        if(result.length>0){
