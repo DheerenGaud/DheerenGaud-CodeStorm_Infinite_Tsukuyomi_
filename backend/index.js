@@ -2,18 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const bodyparser = require("body-parser");
 const Router1=require("./Router/router1.js")
+const Router2=require("./Router/router2.js")
+const Router3=require("./Router/router3.js")
 const mongoose = require("mongoose");
 // const connected = require("./db/db")
 
 app = express();
 
-app.use(cors({ origin: "http://localhost:3000", methods: ["GET", "POST"] }));
+app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST"] }));
 app.use(express.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
 const connected = async () => {
     try {
-        await mongoose.connect("mongodb://0.0.0.0:27017/DataAnalsis", {
+        await mongoose.connect("mongodb://0.0.0.0:27017/tsec", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
           });
@@ -27,6 +29,8 @@ connected();
 
 
 app.use("/auth",Router1);
+app.use("/client",Router2);
+app.use("/event",Router3)
 app.get("/",(req,res)=>{
   res.send("hello")
 })

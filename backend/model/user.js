@@ -1,35 +1,19 @@
-const mongoose = require("mongoose");
 
-const UserSecham = mongoose.Schema({
+const mongoose = require('mongoose');
 
-  Fname: {
-    type: String,
-    required: true,
-  },
-  Lname: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  Dob: {
-    type: Date,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  varified: {
-    type: Boolean,
-    default:false,
-  },
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  password: { type: String, required: true },
+  userType: { type: String, enum: ['vendor', 'client', 'attendee','admin'], required: true },
+  companyName: { type: String },
+  companyAddress: { type: String },
+  domain: { type: String },
+  varified:{
+    type:Boolean,
+    default:false
+  }
 });
-// Ac_model: {
-//   type: String,
-//   required: true,
-//   enum: ["AcademicYear", "dceAcademicYear"], 
-// },
-module.exports = mongoose.model("User", UserSecham);
+
+module.exports = mongoose.model('User', userSchema);

@@ -166,13 +166,13 @@ Router.get("/verify/:userID/:uinqueString",async(req,res)=>{
 
 Router.post("/singUp",async(req,res)=>{
     console.log(req.body);
-    const {Fname,Lname,password,Dob,email}=req.body;
+    const {name,email,phoneNumber,userType,companyName,companyAddress,domain,password}=req.body;
     try {    
      const encryptPassword= await bycrpt.hash(password,10)
-    await User.findOne({email}).then((result)=>{
+    await User.findOne({email,userType}).then((result)=>{
         if(!result){
                  User.create({
-                    Fname,Lname,email,password:encryptPassword,varified:false,Dob
+                    email,name,phoneNumber,userType,companyName,companyAddress,domain,varified:false,password:encryptPassword
                 })
                 .then((x)=>{
                     sendemailvarification(x,res);
@@ -197,10 +197,10 @@ Router.post("/singUp",async(req,res)=>{
 
 
 Router.post("/login-user", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password,loginAs } = req.body;
     console.log(req.body)
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email:email,userType:loginAs});
         if (!user) {
           return res.json({ error: "user not found", redirect: "" });
         } else {
